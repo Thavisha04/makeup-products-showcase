@@ -10,10 +10,10 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import {Link} from "react-router-dom";
+import Link from "next/link";
 
 
-function Home() {
+export default function Home() {
   return (
       <>
         <section className="bg-light text-center py-5">
@@ -22,9 +22,11 @@ function Home() {
             <p className="lead mt-3">
               Discover beauty products that bring out the best in you – skincare, makeup, and more.
             </p>
-            <Button as={Link} to="/products" variant="dark" size="lg" className="mt-3">
+            <Link href="/products">
+            <Button variant="dark" size="lg" className="mt-3">
               Shop Now
             </Button>
+            </Link>
           </div>
         </section>
 
@@ -115,13 +117,13 @@ function Home() {
         <section className="text-center py-5">
           <div className="container-fluid p-0">
             <h2 className="fw-bold">✨ Ready to Glow? ✨</h2>
-            <Button as={Link} to="/products" variant="dark" size="lg" className="mt-3">
-              Browse Products
-            </Button>
+            <Link href="/products">
+              <Button variant="dark" size="lg" className="mt-3">
+                Browse Products
+              </Button>
+            </Link>
           </div>
         </section>
       </>
   );
 }
-
-export default Home;
