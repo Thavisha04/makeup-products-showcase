@@ -2,31 +2,46 @@
 // Student ID: 100942619, 100942614
 // Group no: 7
 // Date created: Sep 27, 2025
-// Last modified: Oct 02, 2025
+// Last modified: Nov 09, 2025
 // File name: AppNavBar.js
 
-import {Link} from "react-router-dom";
+import Link from "next/link";
+import {useRouter} from "next/router";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-function AppNavbar({links}) {
+export default function AppNavbar({links}) {
+
+    const router = useRouter();
+    const {pathname} = router || {};
 
     return (
         <Navbar bg="dark" variant="dark">
-
-            <Navbar.Brand as={Link} to="/">&nbsp;&nbsp;&nbsp;&nbsp;Glowup</Navbar.Brand>
+            <Navbar.Brand as={Link} href="/">
+                &nbsp;&nbsp;&nbsp;&nbsp;Glowup
+            </Navbar.Brand>
 
             <Nav className="ms-auto">
-                {links.map((link, index) => (
-                    <Nav.Link
-                        as={Link} key={index} to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
-                    >{link}
-                    </Nav.Link>
-                ))}
+                {links.map((link, index) => {
+                    const href = link === "Home" ? "/" : `/${link.toLowerCase()}`;
+
+                    const isActive =
+                        pathname === href ||
+                        (link === "Products" && pathname.startsWith("/products"));
+
+                    return (
+                        <Nav.Link
+                            as={Link}
+                            key={index}
+                            href={href}
+                            aria-current={isActive ? "page" : undefined}
+                            active={isActive}
+                        >
+                            {link}
+                        </Nav.Link>
+                    );
+                })}
             </Nav>
         </Navbar>
-
     );
 }
-
-export default AppNavbar;
