@@ -2,12 +2,12 @@
 // Student ID: 100942619, 100942614
 // Group no: 7
 // Date created: Sep 27, 2025
-// Last modified: Oct 02, 2025
+// Last modified: Nov 09, 2025
 // File name: Footer.js
 
 import Container from "react-bootstrap/Container";
 
-function Footer() {
+export default function Footer() {
     return (
         <footer className="bg-dark text-white py-3 mt-auto">
             <Container>
@@ -18,5 +18,3 @@ function Footer() {
         </footer>
     );
 }
-
-export default Footer;
