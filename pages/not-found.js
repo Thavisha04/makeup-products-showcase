@@ -5,18 +5,20 @@
 // Last modified: Oct 02, 2025
 // File name: NotFound.jsx
 
-import Alert from 'react-bootstrap/Alert';
+// pages/not-found.js
+import Alert from "react-bootstrap/Alert";
 import Header from "@/components/Header";
 import AppNavbar from "@/components/AppNavBar";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 
 export default function NotFound() {
     return (
         <div>
-            <Header title="Page Not Found"/>
-            <AppNavbar links={["Home", "Product", "About"]}/>
+            <Header title="Page Not Found" />
+            <AppNavbar links={["Home", "Products", "About"]} />
 
             <main>
                 <Container className="text-center my-5">
@@ -25,14 +27,13 @@ export default function NotFound() {
                     <p className="text-secondary mb-4">
                         The page you are looking for does not exist.
                     </p>
-                    <Button href="/products" variant="dark" size="lg">
-                        Back to Products
-                    </Button>
+                    <Link href="/makeup" legacyBehavior>
+                        <a className="btn btn-dark btn-lg">Back to Products</a>
+                    </Link>
                 </Container>
             </main>
 
             <Footer />
         </div>
-
     );
 }

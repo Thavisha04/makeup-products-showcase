@@ -22,7 +22,7 @@ export default function Home() {
             <p className="lead mt-3">
               Discover beauty products that bring out the best in you – skincare, makeup, and more.
             </p>
-            <Link href="/products">
+            <Link href="/makeup">
             <Button variant="dark" size="lg" className="mt-3">
               Shop Now
             </Button>
@@ -117,7 +117,7 @@ export default function Home() {
         <section className="text-center py-5">
           <div className="container-fluid p-0">
             <h2 className="fw-bold">✨ Ready to Glow? ✨</h2>
-            <Link href="/products">
+            <Link href="/makeup">
               <Button variant="dark" size="lg" className="mt-3">
                 Browse Products
               </Button>
