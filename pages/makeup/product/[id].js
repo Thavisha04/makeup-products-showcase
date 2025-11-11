@@ -52,7 +52,6 @@ export default function ProductDetail({ product }) {
 
     return (
         <div className="app-container">
-            <Header title={product.title} />
             <AppNavbar links={["Home", "Products", "About"]} />
 
             <main>
@@ -74,7 +73,6 @@ export default function ProductDetail({ product }) {
 
                         <Col md={6}>
                             <h3 className="fw-bold">{product.title}</h3>
-                            {product.author && <p className="text-muted">By {product.author}</p>}
                             <p className="text-secondary">{product.description}</p>
                             {product.price && <h4 className="text-dark">${product.price}</h4>}
 
@@ -89,7 +87,11 @@ export default function ProductDetail({ product }) {
                                     <strong>Rating: </strong>⭐ {product.rating}
                                 </div>
                             )}
-
+                            {product.author && (
+                                <div>
+                                    <strong>Brand: </strong>{product.author}
+                                </div>
+                            )}
                             <div className="mt-3">
                                 <Button variant="outline-dark" size="lg" className="me-2">
                                     ADD TO CART
