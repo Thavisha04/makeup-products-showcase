@@ -45,10 +45,8 @@ export default function ProductCard({ product }) {
                 <Card.Title>{title}</Card.Title>
                 {author && <Card.Text className="text-muted">{author}</Card.Text>}
 
-                <Link href={`/makeup/product/${id}`} legacyBehavior>
-                    <Button variant="light" size="sm">
+                <Link href={`/makeup/product/${id}`} className="variant sm">
                         View Details
-                    </Button>
                 </Link>
             </Card.Body>
         </Card>

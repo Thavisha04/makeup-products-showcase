@@ -17,10 +17,9 @@ export default function AppNavbar({ links = [] }) {
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
-            {/* Brand Logo / Title */}
-            <Link href="/" className="navbar-brand">
+            <Navbar.Brand as={Link} href="/">
                 Glowup
-            </Link>
+            </Navbar.Brand>
 
             <Nav className="ms-auto">
                 {links.map((link, index) => {
@@ -38,14 +37,15 @@ export default function AppNavbar({ links = [] }) {
                         (link === "Products" && pathname.startsWith("/makeup"));
 
                     return (
-                        <Link
+                        <Nav.Link
                             key={index}
+                            as={Link}
                             href={href}
-                            className={`nav-link ${isActive ? "active" : ""}`}
+                            className={isActive ? "active" : ""}
                             aria-current={isActive ? "page" : undefined}
                         >
                             {link}
-                        </Link>
+                        </Nav.Link>
                     );
                 })}
             </Nav>

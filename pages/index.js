@@ -11,21 +11,24 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Link from "next/link";
+import AppNavbar from "@/components/AppNavBar";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
   return (
-      <>
+      <div className="app-container">
+        <AppNavbar links={["Home", "Products", "About"]}/>
         <section className="bg-light text-center py-5">
           <div className="container-fluid p-0">
             <h1 className="display-4 fw-bold">Glow Up With Confidence 💄✨</h1>
             <p className="lead mt-3">
               Discover beauty products that bring out the best in you – skincare, makeup, and more.
             </p>
-            <Link href="/makeup">
-            <Button variant="dark" size="lg" className="mt-3">
-              Shop Now
-            </Button>
+            <Link href="/makeup" passHref>
+              <Button variant="dark" size="lg" className="mt-3">
+                Shop Now
+              </Button>
             </Link>
           </div>
         </section>
@@ -62,7 +65,7 @@ export default function Home() {
         </section>
 
         <section className="bg-dark text-white py-5">
-          <div className="container-fluid p-0">
+          <div className="container">
             <h2 className="text-center mb-4">Why Choose Glow Up?</h2>
             <Row className="text-center">
               <Col md={3} sm={6}>
@@ -124,6 +127,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
-      </>
+
+        <Footer/>
+      </div>
   );
 }
