@@ -13,31 +13,39 @@ import Navbar from "react-bootstrap/Navbar";
 
 export default function AppNavbar({ links = [] }) {
     const router = useRouter();
-    const pathname = router?.pathname || "";
+    const { pathname } = router || {};
 
     return (
-        <Navbar bg="dark" variant="dark" className="px-3">
-            <Link href="/" legacyBehavior>
-                <a className="navbar-brand">Glowup</a>
+        <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+            {/* Brand Logo / Title */}
+            <Link href="/" className="navbar-brand">
+                Glowup
             </Link>
 
             <Nav className="ms-auto">
                 {links.map((link, index) => {
-                    const href = link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`;
+                    // 👇 Fix the href so “Products” goes to /makeup
+                    const href =
+                        link === "Home"
+                            ? "/"
+                            : link === "Products"
+                                ? "/makeup"
+                                : `/${link.toLowerCase()}`;
+
+                    // 👇 Adjust active link detection
                     const isActive =
-                        pathname === href || (link === "Products" && pathname.startsWith("/products"));
+                        pathname === href ||
+                        (link === "Products" && pathname.startsWith("/makeup"));
 
                     return (
-                        <div key={index} className="nav-item">
-                            <Link href={href} legacyBehavior>
-                                <a
-                                    className={`nav-link ${isActive ? "active" : ""}`}
-                                    aria-current={isActive ? "page" : undefined}
-                                >
-                                    {link}
-                                </a>
-                            </Link>
-                        </div>
+                        <Link
+                            key={index}
+                            href={href}
+                            className={`nav-link ${isActive ? "active" : ""}`}
+                            aria-current={isActive ? "page" : undefined}
+                        >
+                            {link}
+                        </Link>
                     );
                 })}
             </Nav>

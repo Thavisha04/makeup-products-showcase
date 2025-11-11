@@ -6,42 +6,39 @@
 // File name: index.js
 
 // pages/products/index.js
-import Header from "@/components/Header.js";
-import NavBar from "@/components/AppNavBar.js";
-import Footer from "@/components/Footer.js";
-import ProductList from "@/components/ProductList.js";
-import { useContext, useEffect, useState } from "react";
-import { ProductContext } from "@/components/ProductContext.js";
-import { Container, Button } from "react-bootstrap";
+import { useEffect, useContext } from "react";
+import Header from "@/components/Header";
+import AppNavbar from "@/components/AppNavBar";
+import Footer from "@/components/Footer";
+import ProductList from "@/components/ProductList";
+import { ProductContext } from "@/components/ProductContext";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Link from "next/link";
 
-const spaceId = process.env.CONTENTFUL_SPACE_ID;
-const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
-const envId = process.env.CONTENTFUL_ENV || "master";
+const CONTENT_TYPE = "product";
+const LIMIT = 10;
 
-function Products({ products: initialProducts = [], error, page = 1, totalProducts = 0, totalPages = 1 }) {
-    const { selectedSection, setSelectedSection, filteredProducts, setProducts } = useContext(ProductContext);
-    // fallback in case context doesn't expose setProducts (it does in our provider)
+export default function ProductsPage({ products, page, totalProducts, totalPages, error }) {
+    const { setProducts, setTotalProducts, setTotalPages, setPage } =
+        useContext(ProductContext);
+
     useEffect(() => {
-        if (initialProducts && initialProducts.length) {
-            setProducts?.(initialProducts);
-        }
-    }, [initialProducts, setProducts]);
-
-    const sections = ["All", "Eye Makeup", "Face Makeup", "Lip Makeup"];
-
-    // Default pagination state (client-side control for now)
-    const [currentPage, setCurrentPage] = useState(page);
+        if (products) setProducts(products);
+        if (typeof totalProducts !== "undefined") setTotalProducts(totalProducts);
+        if (typeof totalPages !== "undefined") setTotalPages(totalPages);
+        if (typeof page !== "undefined") setPage(page);
+    }, [products, totalProducts, totalPages, page, setProducts, setTotalProducts, setTotalPages, setPage]);
 
     const handlePageChange = (newPage) => {
-        // you could implement client side fetch for the new page or use query param navigation.
-        setCurrentPage(newPage);
-        // For now: basic demo — in full assignment you'd wire Contentful skip/limit with getStaticProps or dynamic pages
+        // navigate to paginated path
+        window.location.href = `/products/page/${newPage}`;
     };
 
     return (
         <div className="app-container">
             <Header title="Our Products" />
-            <NavBar links={["Home", "Products", "About"]} />
+            <AppNavbar links={["Home", "Products", "About"]} />
 
             <main className="content">
                 <Container className="my-5">
@@ -52,21 +49,15 @@ function Products({ products: initialProducts = [], error, page = 1, totalProduc
                     ) : (
                         <>
                             <div className="mb-3 text-center">
-                                {sections.map((section) => (
-                                    <Button
-                                        key={section}
-                                        variant={selectedSection === section ? "dark" : "outline-dark"}
-                                        className="me-2 mb-2"
-                                        onClick={() => setSelectedSection?.(section)}
-                                    >
-                                        {section}
-                                    </Button>
-                                ))}
+                                {/* Simple link to page 1; users can go to pages via product list pagination */}
+                                <Link href="/products/page/1">
+                                    <Button variant="dark" className="me-2">View Page 1</Button>
+                                </Link>
                             </div>
 
                             <ProductList
-                                products={filteredProducts}
-                                page={currentPage}
+                                products={products}
+                                page={page}
                                 totalProducts={totalProducts}
                                 totalPages={totalPages}
                                 onPageChange={handlePageChange}
@@ -75,69 +66,69 @@ function Products({ products: initialProducts = [], error, page = 1, totalProduc
                     )}
                 </Container>
             </main>
+
             <Footer />
         </div>
     );
 }
 
-/**
- * For assignment SSG: fetch a (reasonable) page from Contentful.
- * Note: getStaticProps cannot read query params at request-time; if you need page-based SSG you should create
- * paginated routes (e.g., /products/page/[page]) or use client-side fetching.
- */
 export async function getStaticProps() {
-    try {
-        const limit = 5; // number per page for initial build
-        const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${envId}/entries?content_type=product&access_token=${accessToken}&limit=${limit}`;
+    const spaceId = process.env.CONTENTFUL_SPACE_ID;
+    const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
+    const envId = process.env.CONTENTFUL_ENV || "master";
+    const contentType = CONTENT_TYPE;
 
+    const limit = LIMIT;
+    const skip = 0; // page 1
+
+    const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${envId}/entries?content_type=${contentType}&access_token=${accessToken}&limit=${limit}&skip=${skip}&select=sys.id,fields`;
+
+    try {
         const res = await fetch(url);
-        if (!res.ok) {
-            throw new Error(`Contentful fetch failed: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Contentful fetch failed ${res.status}`);
+
         const data = await res.json();
 
-        const products = (data.items || []).map((item) => {
-            const fields = item.fields || {};
-            const imageUrl = fields.image?.fields?.file?.url || null;
+        const items = (data.items || []).map((item) => {
             return {
                 id: item.sys.id,
-                title: fields.title || "",
-                description: fields.description || "",
-                category: fields.category || "",
-                price: fields.price || "",
-                rating: fields.rating || null,
-                tag: fields.tag,
-                brand: fields.brand || "",
-                image: imageUrl ? (imageUrl.startsWith("//") ? `https:${imageUrl}` : imageUrl) : null,
+                title: item.fields.title || "",
+                description: item.fields.description || "",
+                author: item.fields.author || item.fields.brand || "",
+                category: item.fields.category || "",
+                price: item.fields.price || null,
+                rating: item.fields.rating || null,
+                tags: item.fields.tags || [],
+                brand: item.fields.brand || "",
+                image: item.fields.image?.fields?.file?.url
+                    ? `https:${item.fields.image.fields.file.url}`
+                    : null,
             };
         });
 
-        const totalProducts = data.total || products.length;
-        const totalPages = Math.ceil(totalProducts / limit);
+        const totalProducts = data.total || 0;
+        const totalPages = Math.max(1, Math.ceil(totalProducts / limit));
 
         return {
             props: {
-                products,
-                error: null,
+                products: items,
                 page: 1,
                 totalProducts,
                 totalPages,
             },
-            revalidate: 60, // revalidate periodically
+            revalidate: 60, // ISR to keep data fairly fresh
         };
     } catch (err) {
-        console.error("getStaticProps products error:", err);
+        console.error("Error fetching products:", err.message);
         return {
             props: {
                 products: [],
-                error: "Failed to fetch products",
                 page: 1,
                 totalProducts: 0,
                 totalPages: 1,
+                error: "Failed to fetch products",
             },
+            revalidate: 60,
         };
     }
 }
-
-export default Products;
-

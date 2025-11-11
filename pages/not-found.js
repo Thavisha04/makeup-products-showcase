@@ -27,8 +27,10 @@ export default function NotFound() {
                     <p className="text-secondary mb-4">
                         The page you are looking for does not exist.
                     </p>
-                    <Link href="/makeup" legacyBehavior>
-                        <a className="btn btn-dark btn-lg">Back to Products</a>
+                    <Link href="/makeup">
+                        <Button variant="dark" size="lg">
+                            Back to Products
+                        </Button>
                     </Link>
                 </Container>
             </main>

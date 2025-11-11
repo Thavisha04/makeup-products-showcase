@@ -13,24 +13,33 @@ export const ProductContext = createContext(null);
 export function ProductProvider({ children }) {
     const [products, setProducts] = useState([]);
     const [selectedSection, setSelectedSection] = useState("All");
+    const [page, setPage] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
 
-    // filteredProducts derived from products + selectedSection
     const filteredProducts = useMemo(() => {
-        if (!products || products.length === 0) return [];
-        if (selectedSection === "All") return products;
-        // simple category matching (case-insensitive)
-        return products.filter((p) => (p.category || "").toLowerCase().includes(selectedSection.toLowerCase()));
+        if (!products) return [];
+        if (!selectedSection || selectedSection === "All") return products;
+        return products.filter(
+            (p) => (p.category || "").toLowerCase() === selectedSection.toLowerCase()
+        );
     }, [products, selectedSection]);
 
+    const value = {
+        products,
+        setProducts,
+        selectedSection,
+        setSelectedSection,
+        filteredProducts,
+        page,
+        setPage,
+        totalProducts,
+        setTotalProducts,
+        totalPages,
+        setTotalPages,
+    };
+
     return (
-        <ProductContext.Provider value={{
-            products,
-            setProducts,
-            selectedSection,
-            setSelectedSection,
-            filteredProducts
-        }}>
-            {children}
-        </ProductContext.Provider>
+        <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
     );
 }

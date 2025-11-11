@@ -17,7 +17,7 @@ export default function About() {
     return (
         <div className="app-container">
             <Header title="Glowup costmetics"/>
-            <NavBar links={['Home', 'Blog', 'About']}/>
+            <NavBar links={['Home', 'Products', 'About']}/>
 
             <section className="py-5 bg-light full-width">
                 <Container>

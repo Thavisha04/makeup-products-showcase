@@ -5,42 +5,50 @@
 // Last modified: Oct 02, 2025
 // File name: ProductCard.js
 
+// components/ProductCard.js
 import Link from "next/link";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
+import Card from "react-bootstrap/Card";
 import Image from "next/image";
 
 export default function ProductCard({ product }) {
-    if (!product) return null;
-
-    // Use the products route (/products/[id])
-    const productHref = `/products/${product.id}`;
+    const { id, title, author, image } = product;
 
     return (
-        <Card style={{ width: "18rem" }} className="shadow-sm mb-4">
-            {product.image && (
-                <Image
-                    src={product.image}
-                    alt={product.title}
-                    className="card-img-top"
-                    style={{ height: "250px", objectFit: "cover" }}
-                />
-            )}
-            <Card.Body>
-                <Card.Title>{product.title}</Card.Title>
-                <Card.Text className="fw-bold text-success">${product.price}</Card.Text>
-                <Card.Text>⭐ {product.rating ?? "N/A"}</Card.Text>
-
-                <div className="mb-2">
-
-                        <Badge bg="dark" className="me-1">
-                            {product.tag}
-                        </Badge>
+        <Card className="bg-dark text-light mb-4">
+            {image ? (
+                <div style={{ position: "relative", width: "100%", height: 300 }}>
+                    <Image
+                        src={image}
+                        alt={title}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                 </div>
+            ) : (
+                <div
+                    style={{
+                        width: "100%",
+                        height: 300,
+                        backgroundColor: "#333",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <span>No Image</span>
+                </div>
+            )}
 
-                <Link href={productHref} legacyBehavior>
-                    <a className="btn btn-dark btn-sm">View Details</a>
+            <Card.Body>
+                <Card.Title>{title}</Card.Title>
+                {author && <Card.Text className="text-muted">{author}</Card.Text>}
+
+                <Link href={`/makeup/product/${id}`} legacyBehavior>
+                    <Button variant="light" size="sm">
+                        View Details
+                    </Button>
                 </Link>
             </Card.Body>
         </Card>
