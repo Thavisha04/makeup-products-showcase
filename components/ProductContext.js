@@ -20,9 +20,13 @@ export function ProductProvider({ children }) {
     const filteredProducts = useMemo(() => {
         if (!products) return [];
         if (!selectedSection || selectedSection === "All") return products;
-        return products.filter(
-            (p) => (p.category || "").toLowerCase() === selectedSection.toLowerCase()
-        );
+
+        const filterValue = selectedSection.toLowerCase().trim();
+
+        return products.filter((p) => {
+            const category = (p.category || "").toLowerCase().trim();
+            return category.includes(filterValue);
+        });
     }, [products, selectedSection]);
 
     const value = {

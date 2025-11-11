@@ -9,14 +9,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import Header from "@/components/Header.js";
 import NavBar from "@/components/AppNavBar.js";
 import Footer from "@/components/Footer.js";
 
 export default function About() {
     return (
         <div className="app-container">
-            <Header title="Glowup costmetics"/>
             <NavBar links={['Home', 'Products', 'About']}/>
 
             <section className="py-5 bg-light full-width">
@@ -70,6 +68,7 @@ export default function About() {
                     </Row>
                 </Container>
             </section>
+            <Footer />
         </div>
     );
 
