@@ -35,7 +35,6 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
 
     // Update current page products whenever filtered products or page changes
     useEffect(() => {
-        if (!filteredProducts) return;
         const startIndex = (page - 1) * LIMIT;
         const endIndex = startIndex + LIMIT;
         setCurrentPageProducts(filteredProducts.slice(startIndex, endIndex));
@@ -48,7 +47,7 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
 
     const handleCategoryChange = (category) => {
         setSelectedSection(category);
-        setPage(1);
+        setPage(1); // reset to page 1 when changing category
     };
 
     // Create pagination buttons
