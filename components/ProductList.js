@@ -29,10 +29,6 @@ export default function ProductList({
 
     return (
         <div className="product-list">
-            <h3>
-                Products (Page {page} of {totalPages}, Total: {totalProducts})
-            </h3>
-
             <Row className="g-4">
                 {displayProducts.map((p) => (
                     <Col key={p.id} xs={12} sm={6} md={4} lg={3}>
@@ -40,28 +36,6 @@ export default function ProductList({
                     </Col>
                 ))}
             </Row>
-
-            <div className="pagination text-center mt-4">
-                <button
-                    disabled={page <= 1}
-                    onClick={() => onPageChange && onPageChange(page - 1)}
-                    className="btn btn-outline-dark me-2"
-                >
-                    Previous
-                </button>
-
-                <span>
-          Page {page} of {totalPages}
-        </span>
-
-                <button
-                    disabled={page >= totalPages}
-                    onClick={() => onPageChange && onPageChange(page + 1)}
-                    className="btn btn-outline-dark ms-2"
-                >
-                    Next
-                </button>
-            </div>
         </div>
     );
 }

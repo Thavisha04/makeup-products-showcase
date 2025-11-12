@@ -7,6 +7,7 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { client } from "@/lib/contentful";
 
 const CONTENT_TYPE = "product";
 const LIMIT = 5; // 5 products per page
@@ -101,22 +102,13 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
 }
 
 export async function getStaticProps() {
-    const spaceId = process.env.CONTENTFUL_SPACE_ID;
-    const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
-    const envId = process.env.CONTENTFUL_ENV || "master";
-    const contentType = CONTENT_TYPE;
-
-    const limit = 1000; // fetch all products for client-side filtering
-
-    const url = `https://cdn.contentful.com/spaces/${spaceId}/environments/${envId}/entries?content_type=${contentType}&access_token=${accessToken}&limit=${limit}&select=sys.id,fields`;
-
     try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`Contentful fetch failed ${res.status}`);
+        const entries = await client.getEntries({
+            content_type: "product",
+            include: 1, // resolve linked assets
+        });
 
-        const data = await res.json();
-
-        const items = (data.items || []).map((item) => ({
+        const items = entries.items.map((item) => ({
             id: item.sys.id,
             title: item.fields.title || "",
             description: item.fields.description || "",
@@ -124,33 +116,24 @@ export async function getStaticProps() {
             category: item.fields.tag || "",
             price: item.fields.price || null,
             rating: item.fields.rating || null,
-            tag: item.fields.tag || "",
             brand: item.fields.brand || "",
             image: item.fields.image?.fields?.file?.url
                 ? `https:${item.fields.image.fields.file.url}`
                 : null,
         }));
 
-        const totalProducts = items.length;
-        const totalPages = Math.max(1, Math.ceil(totalProducts / LIMIT));
-
         return {
             props: {
                 products: items,
-                totalProducts,
-                totalPages,
+                totalProducts: items.length,
+                totalPages: Math.max(1, Math.ceil(items.length / 5)),
             },
             revalidate: 60,
         };
     } catch (err) {
         console.error("Error fetching products:", err.message);
         return {
-            props: {
-                products: [],
-                totalProducts: 0,
-                totalPages: 1,
-                error: "Failed to fetch products",
-            },
+            props: { products: [], totalProducts: 0, totalPages: 1 },
             revalidate: 60,
         };
     }
