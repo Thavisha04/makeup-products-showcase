@@ -1,3 +1,10 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Nov 09, 2025
+// File name: [id].js
+
 import { useRouter } from 'next/router';
 import Header from '@/components/Header';
 import AppNavbar from '@/components/AppNavBar';
@@ -34,7 +41,7 @@ export default function ProductDetail({ product }) {
                 <Container className="my-5 text-center">
                     <h2>Product not found</h2>
                     <Link href="/makeup">
-                        <Button variant="dark">Back to Products</Button>
+                        <Button variant="dark" size="lg" className="mt-3">Back to Products</Button>
                     </Link>
                 </Container>
                 <Footer />
@@ -66,7 +73,7 @@ export default function ProductDetail({ product }) {
                         <Col md={6}>
                             <h3 className="fw-bold">{product.title}</h3>
                             <p className="text-secondary">{product.description}</p>
-                            {product.price && <h4 className="text-dark">${product.price}</h4>}
+                            {product.price && <h4 className="text-success">${product.price}</h4>}
                             {product.category && (
                                 <div>
                                     <strong>Category: </strong>
@@ -84,12 +91,12 @@ export default function ProductDetail({ product }) {
                                 </div>
                             )}
 
-                            <div className="mt-3">
-                                <Button variant="outline-dark" size="lg" className="me-2">
-                                    ADD TO CART
+                            <div className="mt-5">
+                                <Button variant="outline-dark" size="lg" className="me-3">
+                                    Add to Cart
                                 </Button>
                                 <Link href="/makeup">
-                                    <Button variant="secondary" size="lg">
+                                    <Button variant="dark" size="lg">
                                         Back to Products
                                     </Button>
                                 </Link>
@@ -104,7 +111,6 @@ export default function ProductDetail({ product }) {
     );
 }
 
-// Get all product IDs for static paths
 export async function getStaticPaths() {
     try {
         const entries = await client.getEntries({ content_type: 'product', select: 'sys.id' });
@@ -118,7 +124,6 @@ export async function getStaticPaths() {
     }
 }
 
-// Fetch product details by ID
 export async function getStaticProps({ params }) {
     try {
         const entry = await client.getEntry(params.id);
@@ -133,7 +138,7 @@ export async function getStaticProps({ params }) {
             category: entry.fields.category || '',
             price: entry.fields.price || null,
             rating: entry.fields.rating || null,
-            tags: entry.fields.tags || [],
+            tag: entry.fields.tag || [],
             image: entry.fields.image?.fields?.file?.url ? `https:${entry.fields.image.fields.file.url}` : null,
         };
 

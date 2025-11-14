@@ -5,15 +5,14 @@
 // Last modified: Nov 09, 2025
 // File name: AppNavBar.js
 
-// components/AppNavBar.js
 import Link from "next/link";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-export default function AppNavbar({ links = [] }) {
+export default function AppNavbar({links = []}) {
     const router = useRouter();
-    const { pathname } = router || {};
+    const {pathname} = router || {};
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
@@ -23,7 +22,6 @@ export default function AppNavbar({ links = [] }) {
 
             <Nav className="ms-auto">
                 {links.map((link, index) => {
-                    // 👇 Fix the href so “Products” goes to /makeup
                     const href =
                         link === "Home"
                             ? "/"
@@ -31,7 +29,6 @@ export default function AppNavbar({ links = [] }) {
                                 ? "/makeup"
                                 : `/${link.toLowerCase()}`;
 
-                    // 👇 Adjust active link detection
                     const isActive =
                         pathname === href ||
                         (link === "Products" && pathname.startsWith("/makeup"));

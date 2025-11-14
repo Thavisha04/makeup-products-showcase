@@ -2,11 +2,9 @@
 // Student ID: 100942619, 100942614
 // Group no: 7
 // Date created: Sep 27, 2025
-// Last modified: Oct 02, 2025
-// File name: NotFound.jsx
+// Last modified: Nov 09, 2025
+// File name: not-found.js
 
-// pages/not-found.js
-import Alert from "react-bootstrap/Alert";
 import Header from "@/components/Header";
 import AppNavbar from "@/components/AppNavBar";
 import Container from "react-bootstrap/Container";

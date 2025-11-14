@@ -1,3 +1,10 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Nov 09, 2025
+// File name: index.js
+
 import { useEffect, useContext, useState } from "react";
 import AppNavbar from "@/components/AppNavBar";
 import Footer from "@/components/Footer";
@@ -10,7 +17,7 @@ import Col from "react-bootstrap/Col";
 import { client } from "@/lib/contentful";
 
 const CONTENT_TYPE = "product";
-const LIMIT = 5; // 5 products per page
+const LIMIT = 8;
 
 export default function ProductsPage({ products, totalProducts, totalPages: initialTotalPages }) {
     const {
@@ -26,7 +33,6 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
 
     const [currentPageProducts, setCurrentPageProducts] = useState([]);
 
-    // Initialize context with fetched products
     useEffect(() => {
         setProducts(products);
         setTotalProducts(totalProducts);
@@ -34,7 +40,6 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
         setPage(1);
     }, [products, totalProducts, initialTotalPages, setProducts, setTotalProducts, setTotalPages, setPage]);
 
-    // Update current page products whenever filtered products or page changes
     useEffect(() => {
         const startIndex = (page - 1) * LIMIT;
         const endIndex = startIndex + LIMIT;
@@ -43,15 +48,14 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
-        window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to top on page change
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handleCategoryChange = (category) => {
         setSelectedSection(category);
-        setPage(1); // reset to page 1 when changing category
+        setPage(1);
     };
 
-    // Create pagination buttons
     const paginationButtons = [];
     for (let i = 1; i <= Math.ceil(filteredProducts.length / LIMIT); i++) {
         paginationButtons.push(
@@ -74,7 +78,6 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
                 <Container className="my-5">
                     <h2 className="text-center mb-4">Our Products</h2>
 
-                    {/* Category Filter */}
                     <Row className="mb-4 justify-content-center">
                         {["All", "Lip Makeup", "Eye Makeup", "Face Makeup"].map((cat) => (
                             <Col key={cat} xs="auto" className="mb-2">
@@ -88,10 +91,8 @@ export default function ProductsPage({ products, totalProducts, totalPages: init
                         ))}
                     </Row>
 
-                    {/* Product List */}
                     <ProductList products={currentPageProducts} />
 
-                    {/* Pagination */}
                     <div className="mt-4 text-center">{paginationButtons}</div>
                 </Container>
             </main>
@@ -105,7 +106,7 @@ export async function getStaticProps() {
     try {
         const entries = await client.getEntries({
             content_type: "product",
-            include: 1, // resolve linked assets
+            include: 1,
         });
 
         const items = entries.items.map((item) => ({

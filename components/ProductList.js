@@ -7,7 +7,6 @@
 
 import { useContext } from "react";
 import { ProductContext } from "./ProductContext";
-import Link from "next/link";
 import ProductCard from "./ProductCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";

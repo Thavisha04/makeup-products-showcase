@@ -5,7 +5,6 @@
 // Last modified: Oct 02, 2025
 // File name: ProductContext.js
 
-// components/ProductContext.js
 import { createContext, useMemo, useState } from "react";
 
 export const ProductContext = createContext(null);
