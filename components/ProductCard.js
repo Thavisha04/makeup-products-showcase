@@ -12,7 +12,7 @@ import Image from "next/image";
 import Badge from "react-bootstrap/Badge";
 
 export default function ProductCard({ product }) {
-    const { id, title, price, rating, image, tag } = product;
+    const { id, title, price, rating, image, tag, author } = product;
 
     return (
         <Card className="shadow-sm mb-4">
@@ -55,6 +55,8 @@ export default function ProductCard({ product }) {
                         <Badge bg="dark">{tag}</Badge>
                     </div>
                 )}
+
+                {author && <Card.Text>{author}</Card.Text>}
 
                 <Link href={`/makeup/product/${id}`} className="variant sm">
                     <Button variant="dark" size="sm" className="mt-3">View Details</Button>
