@@ -41,10 +41,14 @@ export default async function handler(req, res){
             const products = (data.items || []).map(item => ({
                 id: item.sys.id,
                 title: item.fields.title,
-                content: item.fields.body,
-                author: item.fields.author,
+                content: item.fields.description,
                 category: item.fields.category || null,
+                price: item.fields.price,
+                rating: item.fields.rating,
+                tag: item.fields.tag,
+                brand: item.fields.brand,
                 image: item.fields.image?.fields?.file?.url || null,
+                author: item.fields.author,
                 sys: {version: item.sys.version},
             }));
 
@@ -54,13 +58,13 @@ export default async function handler(req, res){
         }
     }
 
-    //Handle Blog Product Insertion
+    //Handle Makeup Product Insertion
     if(req.method === 'POST'){
 
         return requireAuth(  async(req, res) => {
 
-            const {title, body, author, category} = req.body || {};
-            if (!title || !body || !author || !category) {
+            const {title, body, category, price, rating, tag, brand, image, author} = req.body || {};
+            if (!title || !body || !category || !price || !rating || !tag || !brand || !image || !author) {
                 return res.status(400).json({error: "Missing required fields"});
             }
 
@@ -82,8 +86,13 @@ export default async function handler(req, res){
                                 fields: {
                                     title: { [LOCALE]: title},
                                     body: { [LOCALE]: body},
-                                    author: { [LOCALE]: author},
-                                    category: { [LOCALE]: category}
+                                    category: { [LOCALE]: category},
+                                    price: { [LOCALE]: price},
+                                    rating: { [LOCALE]: rating},
+                                    tag: { [LOCALE]: tag},
+                                    brand: { [LOCALE]: brand},
+                                    image: { [LOCALE]: image},
+                                    author: { [LOCALE]: author}
                                 }
                             }
                         )
@@ -99,7 +108,7 @@ export default async function handler(req, res){
                 const entryId = created.sys.id;
                 const version = created.sys.version;
 
-                //Publish the new entry so we can view it in our Home and Blog pages
+                //Publish the new entry so we can view it in our Home and Makeup pages
                 const publishResponse = await fetch(
                     `https://api.contentful.com/space/${SPACE_ID}/environments/${ENV}/entries/${entryId}/published`,
                     {
@@ -120,8 +129,13 @@ export default async function handler(req, res){
                     id: entryId,
                     title,
                     body,
-                    author,
                     category,
+                    price,
+                    rating,
+                    tag,
+                    brand,
+                    image,
+                    author,
                     published: true,
                     message: 'Product created and published successfully'
                 });
@@ -137,8 +151,8 @@ export default async function handler(req, res){
 
         return requireAuth( async(req, res) => {
 
-            const {id, title, body, author, category} = req.body || {};
-            if (!id || !title || !body || !author || !category) {
+            const {id, title, body, category, price, rating, tag, brand, image, author} = req.body || {};
+            if (!id || !title || !body || !price || !rating || !tag || !brand || !image || !author) {
                 return res.status(400).json({error: "Missing required fields"});
             }
 
@@ -176,10 +190,15 @@ export default async function handler(req, res){
                         },
                         body: JSON.stringify({
                             fields: {
-                                title: { [LOCALE]: title },
-                                body: { [LOCALE]: body },
-                                author: { [LOCALE]: author },
-                                category: { [LOCALE]: category },
+                                title: { [LOCALE]: title},
+                                body: { [LOCALE]: body},
+                                category: { [LOCALE]: category},
+                                price: { [LOCALE]: price},
+                                rating: { [LOCALE]: rating},
+                                tag: { [LOCALE]: tag},
+                                brand: { [LOCALE]: brand},
+                                image: { [LOCALE]: image},
+                                author: { [LOCALE]: author}
                             }
                         })
                     });
@@ -241,7 +260,6 @@ export default async function handler(req, res){
                 );
 
                 res.status(204).json({success: true});
-
 
             }catch(err){
                 console.error('DELETE Error: ', err.message);
