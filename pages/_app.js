@@ -6,14 +6,17 @@
 // File name: _app.js
 
 import "@/styles/globals.css";
-import { ProductProvider } from "@/components/ProductContext";
+import {ProductProvider} from "@/components/ProductContext";
 import "../styles/index.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {AuthProvider} from "@/components/AuthContext";
 
-export default function App({ Component, pageProps }) {
+export default function App({Component, pageProps}) {
     return (
         <ProductProvider>
-            <Component {...pageProps} />
+            <AuthProvider>
+                <Component {...pageProps} />
+            </AuthProvider>
         </ProductProvider>
     );
 }
