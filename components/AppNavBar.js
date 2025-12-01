@@ -89,7 +89,6 @@ export default function NavBar() {
                     ) : (
                         <LoginForm />
                     )}
-
                 </li>
             </ul>
         </nav>
