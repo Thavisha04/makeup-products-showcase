@@ -10,12 +10,15 @@ import {ProductProvider} from "@/components/ProductContext";
 import "../styles/index.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AuthProvider} from "@/components/AuthContext";
+import {CategoryProvider} from "@/components/CategoryContext";
 
 export default function App({Component, pageProps}) {
     return (
         <ProductProvider>
             <AuthProvider>
-                <Component {...pageProps} />
+                <CategoryProvider>
+                    <Component {...pageProps} />
+                </CategoryProvider>
             </AuthProvider>
         </ProductProvider>
     );
