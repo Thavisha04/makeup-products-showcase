@@ -1,3 +1,10 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: AuthContext.js
+
 import {createContext, useEffect, useState} from "react";
 
 export const AuthContext = createContext();

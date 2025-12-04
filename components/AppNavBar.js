@@ -1,96 +1,92 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: AppNavBar.js
+
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/components/AuthContext";
 import LoginForm from "@/components/LoginForm";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 
 export default function NavBar() {
     const router = useRouter();
     const isActive = (pathname) => router.pathname === pathname;
     const { user, logout } = useContext(AuthContext);
+    const [expanded, setExpanded] = useState(false);
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-            <ul className="navbar-nav w-100 d-flex align-items-center gap-3">
-
-                {/* ---- NAV LINKS ---- */}
-                <li className="nav-item">
-                    <Link
-                        href="/"
-                        className={`nav-link ${isActive("/") ? "active" : ""}`}
-                        aria-current={isActive("/") ? "page" : undefined}
-                    >
-                        Home
-                    </Link>
-                </li>
-
-                <li className="nav-item">
-                    <Link
-                        href="/about"
-                        className={`nav-link ${isActive("/about") ? "active" : ""}`}
-                        aria-current={isActive("/about") ? "page" : undefined}
-                    >
-                        About
-                    </Link>
-                </li>
-
-                <li className="nav-item">
-                    <Link
-                        href="/makeup"
-                        className={`nav-link ${isActive("/makeup") ? "active" : ""}`}
-                        aria-current={isActive("/makeup") ? "page" : undefined}
-                    >
-                        Products
-                    </Link>
-                </li>
-
-                {/* ---- Author route ---- */}
-                <li className="nav-item">
-                    {user && (
-                        <Link
-                            href={`/makeup/author/${encodeURIComponent(user.email)}/page/1`}
-                            className={`nav-link ${router.pathname.startsWith("/makeup/author") ? "active" : ""}`}
-                            aria-current={router.pathname.startsWith("/makeup/author") ? "page" : undefined}
+        <Navbar
+            bg="dark"
+            variant="dark"
+            expand="lg"
+            expanded={expanded}
+            className="py-2"
+            sticky="top"
+        >
+            <Container>
+                <Navbar.Toggle
+                    aria-controls="basic-navbar-nav"
+                    onClick={() => setExpanded(!expanded)}
+                />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link
+                            as={Link}
+                            href="/"
+                            className={isActive("/") ? "active" : ""}
                         >
-                            Author
-                        </Link>
-                    )}
-                </li>
-
-
-                {/* ---- USER SECTION ---- */}
-                <li className="ms-auto d-flex align-items-center gap-3">
-
-                    {user ? (
-                        <>
-                            {/* Greeting */}
-                            <span className="text-white small">
-                                Hello, <strong>{user.email}</strong>
-                            </span>
-
-                            {/* Admin Panel */}
-                            {user.role === "admin" && (
-                                <Link
-                                    href="/dashboard"
-                                    className="nav-link text-info fw-semibold"
-                                >
-                                    Admin Panel
-                                </Link>
-                            )}
-
-                            {/* Logout Button */}
-                            <button
-                                onClick={logout}
-                                className="btn btn-outline-light btn-sm"
+                            Home
+                        </Nav.Link>
+                        <Nav.Link
+                            as={Link}
+                            href="/about"
+                            className={isActive("/about") ? "active" : ""}
+                        >
+                            About
+                        </Nav.Link>
+                        <Nav.Link
+                            as={Link}
+                            href="/makeup"
+                            className={isActive("/makeup") ? "active" : ""}
+                        >
+                            Products
+                        </Nav.Link>
+                        {user && (
+                            <Nav.Link
+                                as={Link}
+                                href={`/makeup/author/${encodeURIComponent(user.email)}/page/1`}
+                                className={router.pathname.startsWith("/makeup/author") ? "active" : ""}
                             >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <LoginForm />
-                    )}
-                </li>
-            </ul>
-        </nav>
+                                Author
+                            </Nav.Link>
+                        )}
+                    </Nav>
+
+                    <Nav className="ms-auto d-flex align-items-center gap-2">
+                        {user ? (
+                            <>
+                                <span className="text-white small">
+                                    Hello, <strong>{user.email}</strong>
+                                </span>
+                                {user.role === "admin" && (
+                                    <Nav.Link as={Link} href="/dashboard" className="text-info fw-semibold">
+                                        Admin Panel
+                                    </Nav.Link>
+                                )}
+                                <Button size="sm" variant="outline-light" onClick={logout}>
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <LoginForm />
+                        )}
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 }

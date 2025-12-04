@@ -12,7 +12,7 @@ export default function Footer() {
         <footer className="bg-dark text-white py-3 mt-auto">
             <Container>
                 <p className="mb-0 text-center">
-                    Glowup Cosmetics © 2025. All rights reserved. Don't steal our shine.
+                    Glowup Cosmetics © 2025. All rights reserved. Do not steal our shine.
                 </p>
             </Container>
         </footer>

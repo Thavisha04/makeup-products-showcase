@@ -1,10 +1,16 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: login.js
+
 import {findUserByEmail, generateToken, verifyPassword} from "@/lib/auth";
 
 const cookie = require('cookie');
 
 export default function handler(req, res) {
 
-    //Permit ONLY POST request for login
     if (req.method !== 'POST') {
         return res.status(405).end();
     }
@@ -16,7 +22,6 @@ export default function handler(req, res) {
         return res.status(401).json({error: 'Invalid email or password'});
     }
 
-    //Generate valid token
     const token = generateToken(user);
 
     res.setHeader('Set-Cookie', cookie.serialize('token', token, {

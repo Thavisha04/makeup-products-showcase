@@ -1,3 +1,10 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: [num].js
+
 import { useRouter } from "next/router";
 import { createClient } from "contentful";
 import ProductCard from "@/components/ProductCard";
@@ -25,13 +32,11 @@ export default function AuthorPage({ posts, authorName, page, hasMore }) {
         <div>
             <AppNavBar />
 
-            {/* Page Header */}
             <Container className="py-4">
                 <h2 className="fw-medium text-center mb-4">
                     Products by <span className="text-black-50">{authorName}</span>
                 </h2>
 
-                {/* Product Grid */}
                 <Row className="g-4 justify-content-center">
                     {posts.map((post) => (
                         <Col
@@ -61,7 +66,6 @@ export default function AuthorPage({ posts, authorName, page, hasMore }) {
                     ))}
                 </Row>
 
-                {/* Pagination */}
                 <div className="d-flex justify-content-center gap-3 mt-5">
                     {page > 1 && (
                         <Button
@@ -103,7 +107,7 @@ export default function AuthorPage({ posts, authorName, page, hasMore }) {
 export async function getServerSideProps(context) {
     const { name, num } = context.params;
     const page = parseInt(num) || 1;
-    const pageSize = 8; // shows more items in the grid
+    const pageSize = 8;
 
     const response = await client.getEntries({
         content_type: "product",

@@ -1,202 +1,23 @@
-// import {useContext, useEffect, useState} from "react";
-// import {AuthContext} from "@/components/AuthContext";
-// import {CategoryContext} from "@/components/CategoryContext";
-// import {useRouter} from "next/router";
-//
-// export default function EditProduct(){
-//
-//     const { user, loading } = useContext(AuthContext);
-//     const { categories } = useContext(CategoryContext);
-//     const router = useRouter();
-//     const { id } = router.query;
-//
-//     const [product, setProduct] = useState(null);
-//     const [title, setTitle] = useState('');
-//     const [body, setBody] = useState('');
-//     const [category, setCategory] = useState('');
-//     const [price, setPrice] = useState('');
-//     const [rating, setRating] = useState('');
-//     const [tag, setTag] = useState('');
-//     const [brand, setBrand] = useState('');
-//     const [image, setImage] = useState('');
-//     const [author, setAuthor] = useState('');
-//     const [error, setError] = useState('');
-//     const [saving, setSaving] = useState(false);
-//
-//     useEffect(() => {
-//         if(!id || loading) return;
-//
-//         if(!user){
-//             router.push('/');
-//             return;
-//         }
-//
-//         const fetchProduct = async () => {
-//             try{
-//                 const res = await fetch('api/products');
-//                 const products = await res.json();
-//                 const found = products.find(p => p.id === id);
-//
-//                 if(!found){
-//                     setError('Products could not be found');
-//                     return;
-//                 }
-//
-//                 if(found.author !== user.email && user.role !== 'admin'){
-//                     setError('You can only edit your own products');
-//                     return;
-//                 }
-//
-//                 setProduct(found);
-//                 setTitle(found.title);
-//                 setBody(found.body);
-//                 setCategory(found.category);
-//                 setPrice(found.price);
-//                 setRating(found.rating);
-//                 setTag(found.tag);
-//                 setBrand(found.brand);
-//                 setImage(found.image);
-//                 setAuthor(found.author);
-//
-//
-//             }catch(error){
-//                 setError('Failed to load product: ' + error.message);
-//             }
-//         };
-//
-//         fetchProduct();
-//
-//     }, [id, user, loading, router,categories]);
-//
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         if(!title || !body ) return setError("Title and body are required");
-//
-//         setSaving(true);
-//         setError('');
-//
-//         try{
-//             const res = await fetch('/api/products', {
-//                 method: 'PUT',
-//                 headers: { 'Content-Type': 'application/json' },
-//                 body: JSON.stringify({ id, title, body, category, price, rating, tag, brand, image, author }),
-//             });
-//
-//             if(res.ok){
-//                 router.push('/makeup');
-//             }else{
-//                 const data = await res.json();
-//                 setError(data.error || 'Failed to update product');
-//             }
-//
-//         }catch(error){
-//             setError('Failed to update product: ' + error.message);
-//         } finally{
-//             setSaving(false);
-//         }
-//     };
-//
-//     if(loading) return <p>Loading...</p>
-//     if(error) return <section className="card"><p style={{color: 'red'}}>{error}</p></section>
-//     if(!product) return <p>Product not found</p>;
-//
-//     return (
-//         <section className="card">
-//             <h1>Edit Product</h1>
-//             <form onSubmit={handleSubmit} className="post-form">
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Title"
-//                     value={title}
-//                     onChange={(e) => setTitle(e.target.value)}
-//                     required
-//                 />
-//
-//                 <textarea
-//                     placeholder="Enter Your Content"
-//                     value={body}
-//                     onChange={(e) => setBody(e.target.value)}
-//                     rows={10}
-//                     required
-//                     style={{width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border)'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Author"
-//                     value={author}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Price"
-//                     value={price}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Rating"
-//                     value={rating}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Tag"
-//                     value={tag}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Brand"
-//                     value={brand}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <input
-//                     type="text"
-//                     placeholder="Image"
-//                     value={image}
-//                     readOnly
-//                     style={{backgroundColor: '#f0f0f0'}}
-//                 />
-//
-//                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
-//                     {categories.map(cat => (
-//                         <option key={cat} value={cat}>{cat}</option>
-//                     ))
-//                     }
-//                 </select>
-//
-//                 <button type="submit" disabled={saving}>
-//                     {saving ? 'Saving...' : 'Update Product'}
-//                 </button>
-//             </form>
-//         </section>
-//
-//     );
-// }
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: [id].js
 
-// pages/dashboard/edit/[id].js
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/components/AuthContext";
-import { CategoryContext } from "@/components/CategoryContext";
-import { useRouter } from "next/router";
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "@/components/AuthContext";
+import {CategoryContext} from "@/components/CategoryContext";
+import {useRouter} from "next/router";
+import {Container, Card, Form, Button, Row, Col, Alert} from "react-bootstrap";
+import AppNavbar from "@/components/AppNavBar";
+import Footer from "@/components/Footer";
 
 export default function EditProduct() {
-    const { user, loading } = useContext(AuthContext);
-    const { categories } = useContext(CategoryContext);
+    const {user, loading} = useContext(AuthContext);
+    const {categories} = useContext(CategoryContext);
     const router = useRouter();
-    const { id } = router.query;
+    const {id} = router.query;
 
     const [product, setProduct] = useState(null);
     const [title, setTitle] = useState("");
@@ -213,7 +34,6 @@ export default function EditProduct() {
 
     useEffect(() => {
         if (!id || loading) return;
-
         if (!user) {
             router.push("/");
             return;
@@ -231,7 +51,6 @@ export default function EditProduct() {
                     return;
                 }
 
-                // RBAC: only owner or admin can edit
                 if (found.author !== user.email && user.role !== "admin") {
                     setError("You are not allowed to edit this product");
                     return;
@@ -269,17 +88,8 @@ export default function EditProduct() {
         try {
             const res = await fetch("/api/products", {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id,
-                    title,
-                    description,
-                    category,
-                    price,
-                    rating,
-                    tag,
-                    brand,
-                }), // ⭐ image REMOVED
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({id, title, description, category, price: Number(price), rating: Number(rating), tag, brand}),
             });
 
             if (res.ok) {
@@ -300,50 +110,120 @@ export default function EditProduct() {
     };
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <section className="card"><p style={{ color: "red" }}>{error}</p></section>;
+    if (error && !product) return <Alert variant="danger">{error}</Alert>;
     if (!product) return <p>Loading product...</p>;
 
     return (
-        <section className="card">
-            <h1>Edit Product</h1>
-            <form onSubmit={handleSubmit} className="post-form">
-                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <>
+            <AppNavbar/>
+            <Container className="my-5">
+                <Row className="justify-content-center">
+                    <Col xs={12} md={8} lg={6}>
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <Card.Title className="mb-4">Edit Product</Card.Title>
 
-                <textarea
-                    placeholder="Enter Your Content"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={10}
-                    required
-                    style={{ width: "100%", padding: "0.75rem", borderRadius: "10px", border: "1px solid var(--border)" }}
-                />
+                                {error && <Alert variant="danger">{error}</Alert>}
 
-                <input type="text" placeholder="Author" value={authorFld} readOnly style={{ backgroundColor: "#f0f0f0" }} />
+                                <Form onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3" controlId="title">
+                                        <Form.Label>Title</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter product title"
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
 
-                <input type="text" placeholder="Image" value={image} readOnly style={{ backgroundColor: "#f0f0f0" }} />
+                                    <Form.Group className="mb-3" controlId="description">
+                                        <Form.Label>Description</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={5}
+                                            placeholder="Enter product description"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
 
-                <input type="text" placeholder="Brand" value={brand} onChange={(e) => setBrand(e.target.value)} />
+                                    <Form.Group className="mb-3" controlId="author">
+                                        <Form.Label>Author</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={authorFld}
+                                            readOnly
+                                            style={{backgroundColor: "#e9ecef", color: "#495057"}}
+                                        />
+                                    </Form.Group>
 
-                <input type="text" placeholder="Tag" value={tag} onChange={(e) => setTag(e.target.value)} />
+                                    <Form.Group className="mb-3" controlId="image">
+                                        <Form.Label>Image URL</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={image}
+                                            readOnly
+                                            style={{backgroundColor: "#e9ecef", color: "#495057"}}
+                                        />
+                                    </Form.Group>
 
-                <input type="text" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                    <Row className="mb-3">
+                                        <Col>
+                                            <Form.Group controlId="brand">
+                                                <Form.Label>Brand</Form.Label>
+                                                <Form.Control type="text" value={brand}
+                                                              onChange={(e) => setBrand(e.target.value)}/>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group controlId="tag">
+                                                <Form.Label>Tag</Form.Label>
+                                                <Form.Control type="text" value={tag}
+                                                              onChange={(e) => setTag(e.target.value)}/>
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
 
-                <input type="text" placeholder="Rating" value={rating} onChange={(e) => setRating(e.target.value)} />
+                                    <Row className="mb-3">
+                                        <Col>
+                                            <Form.Group controlId="price">
+                                                <Form.Label>Price</Form.Label>
+                                                <Form.Control type="number" value={price}
+                                                              onChange={(e) => setPrice(e.target.value)}/>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group controlId="rating">
+                                                <Form.Label>Rating</Form.Label>
+                                                <Form.Control type="number" value={rating}
+                                                              onChange={(e) => setRating(e.target.value)}/>
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
 
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                            {cat}
-                        </option>
-                    ))}
-                </select>
+                                    <Form.Group className="mb-3" controlId="category">
+                                        <Form.Label>Category</Form.Label>
+                                        <Form.Select value={category} onChange={(e) => setCategory(e.target.value)}>
+                                            {categories.map((cat) => (
+                                                <option key={cat} value={cat}>
+                                                    {cat}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
 
-                {error && <p style={{ color: "red" }}>{error}</p>}
-
-                <button type="submit" disabled={saving}>
-                    {saving ? "Saving..." : "Update Product"}
-                </button>
-            </form>
-        </section>
+                                    <Button variant="dark" type="submit" disabled={saving} className="w-100">
+                                        {saving ? "Saving..." : "Update Product"}
+                                    </Button>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+            <Footer/>
+        </>
     );
 }

@@ -1,3 +1,10 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: index.js
+
 import { AuthContext } from "@/components/AuthContext";
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -14,7 +21,6 @@ export default function Dashboard() {
     const { user, loading } = useContext(AuthContext);
     const router = useRouter();
 
-    // RBAC Gatekeeping
     useEffect(() => {
         if (!loading) {
             if (!user) {
@@ -49,7 +55,6 @@ export default function Dashboard() {
 
                     <hr />
 
-                    {/* Quick Access Links */}
                     <h5 className="fw-semibold mb-3">Quick Access</h5>
 
                     <Row className="g-3">
@@ -62,7 +67,6 @@ export default function Dashboard() {
                         </Col>
                     </Row>
 
-                    {/* Admin Info */}
                     <Card className="mt-4 bg-light border-0">
                         <Card.Body>
                             <h6 className="fw-bold mb-2">Role Based Permissions</h6>

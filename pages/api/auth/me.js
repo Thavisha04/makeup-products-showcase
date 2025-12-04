@@ -1,25 +1,26 @@
+// Name: Lithasha Thanippuli Appuhamilage, Thavisha Thanippuli Appuhamilage
+// Student ID: 100942619, 100942614
+// Group no: 7
+// Date created: Sep 27, 2025
+// Last modified: Dec 03, 2025
+// File name: me.js
+
 import {verifyToken} from "@/lib/auth";
 
 export default function handler(req, res){
 
-    // STEP 1: Look for the httpOnly cookie that we set during login if it exists
     const token = req.cookies.token;
 
-    // STEP 2: Look for the httpOnly cookie that was set if they logged in
     if(!token){
         return res.status(401).json({error: 'No token - not logged in'});
     }
 
-    // STEP 3: Decode and verify the JWT (check both signature and expiration)
     const payload = verifyToken(token)
 
-    // STEP 4: If the token is invalid, or expired (reject)
     if(!payload){
         return res.status(401).json({error: 'Invalid or expired token'});
     }
 
-    // STEP 5: Token is Good! Send back only the data that our frontend needs
-    // DO NOT send back the password or raw token
     res.status(200).json({
         user: {
             id: payload.userId,
@@ -27,5 +28,4 @@ export default function handler(req, res){
             role: payload.role
         }
     });
-
 }
