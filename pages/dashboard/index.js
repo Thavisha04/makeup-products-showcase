@@ -1,71 +1,86 @@
-import {AuthContext} from "@/components/AuthContext";
-import {useContext, useEffect} from "react";
-import {useRouter} from "next/router";
+import { AuthContext } from "@/components/AuthContext";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
-export default function Dashboard() {
+import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-    const {user, loading} = useContext(AuthContext);
+export default function Dashboard() {
+    const { user, loading } = useContext(AuthContext);
     const router = useRouter();
 
-    useEffect( () => {
-        if(!loading){
-            if(!user){
-                router.push('/');      // redirect the user to home if they are not logged in
-            }else if(user.role !== 'admin'){
-                alert('Access to Dashboard Denied!');   // redirect non-admin users
-                router.push('/');
+    // RBAC Gatekeeping
+    useEffect(() => {
+        if (!loading) {
+            if (!user) {
+                router.push("/");
+            } else if (user.role !== "admin") {
+                alert("Access Denied: Admins Only");
+                router.push("/");
             }
         }
     }, [user, loading, router]);
 
-    //Show Loading Dashboard State
-    if(loading){
-        return(
-            <section className="card">
-                <p>Loading Dashboard</p>
-            </section>
+    if (loading) {
+        return (
+            <Container className="py-5">
+                <Card body className="text-center">
+                    <h5>Loading Dashboard...</h5>
+                </Card>
+            </Container>
         );
     }
 
-    //Last/Final Access Check
-    if(!user || user.role !== 'admin'){
-        return null;
-    }
+    if (!user || user.role !== "admin") return null;
 
     return (
+        <Container className="py-5" style={{ maxWidth: "900px" }}>
+            <Card className="shadow-lg">
+                <Card.Body>
+                    <h2 className="fw-bold mb-1 text-center">Admin Dashboard</h2>
+                    <p className="text-center text-muted">
+                        Welcome, <strong>{user.email}</strong>
+                    </p>
 
-        <section className="card">
-            <h1>Admin Dashboard</h1>
-            <p>Welcome, <strong>{user.email} (Admin)</strong></p>
+                    <hr />
 
-            <div style={{marginTop: '1.5rem', display: 'grid', gap: '1rem'}}>
-                <h3>Quick Access</h3>
-                <Link href="/makeup">
-                    <button style={{ width: '100%', textAlign: 'left'}}>
-                        View All System Products
-                    </button>
-                </Link>
+                    {/* Quick Access Links */}
+                    <h5 className="fw-semibold mb-3">Quick Access</h5>
 
-                {/* Future Enhancements */}
-                <button disabled style={{opacity: 0.5}}>
-                    Manager Users (Possibly in 12.2)
-                </button>
-                <button disabled style={{opacity: 0.5}}>
-                    Site Setting (Time Constraints - Possibly 13.1)
-                </button>
+                    <Row className="g-3">
+                        <Col md={12}>
+                            <Link href="/makeup" passHref legacyBehavior>
+                                <Button variant="dark" className="w-100 py-2">
+                                    View All Products
+                                </Button>
+                            </Link>
+                        </Col>
+                    </Row>
 
-            </div>
-
-            <div style={{ marginTop: '2rem', padding: '1rem', background: '#f0f09ff', borderRadius: '8px', fondSize: '0.9rem'}}>
-                <p><strong>Admin Legend</strong></p>
-                <ul style={{ margin:'0.5rem 0', paddingLeft: '1.2rem'}}>
-                    <li>You can edit or delete <strong>any</strong> product from the Products Page</li>
-                    <li>Authors can edit/delete <strong>only</strong> their own products</li>
-                    <li>All actions in this Lab/Practical are secured with JWT + RBAC</li>
-                </ul>
-            </div>
-        </section>
+                    {/* Admin Info */}
+                    <Card className="mt-4 bg-light border-0">
+                        <Card.Body>
+                            <h6 className="fw-bold mb-2">Role Based Permissions</h6>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item className="ps-0">
+                                    ✔ Admins can edit or delete <strong>any product</strong>.
+                                </ListGroup.Item>
+                                <ListGroup.Item className="ps-0">
+                                    ✔ Authors can edit/delete <strong>only their own</strong> products.
+                                </ListGroup.Item>
+                                <ListGroup.Item className="ps-0">
+                                    ✔ Viewers can only browse products (read-only).
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </Card.Body>
+                    </Card>
+                </Card.Body>
+            </Card>
+        </Container>
     );
-
 }
