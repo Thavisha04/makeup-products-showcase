@@ -66,23 +66,36 @@ export default function NavBar() {
                         )}
                     </Nav>
 
-                    <Nav className="ms-auto d-flex align-items-center gap-2">
+                    <Nav className="ms-auto mt-3 mt-lg-0 d-flex align-items-lg-center gap-2 flex-column flex-lg-row">
                         {user ? (
                             <>
-                                <span className="text-white small">
-                                    Hello, <strong>{user.email}</strong>
-                                </span>
+            <span className="text-white small text-center text-lg-start">
+                Hello, <strong>{user.email}</strong>
+            </span>
+
                                 {user.role === "admin" && (
-                                    <Nav.Link as={Link} href="/dashboard" className="text-info fw-semibold">
+                                    <Nav.Link
+                                        as={Link}
+                                        href="/dashboard"
+                                        className="text-info fw-semibold"
+                                    >
                                         Admin Panel
                                     </Nav.Link>
                                 )}
-                                <Button size="sm" variant="outline-light" onClick={logout}>
+
+                                <Button
+                                    size="sm"
+                                    variant="outline-light"
+                                    onClick={logout}
+                                    className="w-100 w-lg-auto"
+                                >
                                     Logout
                                 </Button>
                             </>
                         ) : (
-                            <LoginForm />
+                            <div className="w-100 w-lg-auto">
+                                <LoginForm />
+                            </div>
                         )}
                     </Nav>
                 </Navbar.Collapse>

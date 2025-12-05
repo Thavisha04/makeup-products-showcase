@@ -40,3 +40,24 @@ a {
     color-scheme: dark;
   }
 }
+
+.nav-login-form {
+  gap: 0.5rem;
+}
+
+@media (max-width: 991px) {
+  .nav-login-form {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .nav-login-form .form-control {
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-login-form .btn {
+    width: 100% !important;
+  }
+}

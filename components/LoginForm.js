@@ -25,7 +25,7 @@ export default function LoginForm() {
     };
 
     return(
-        <form onSubmit={handleSubmit} className="login-form" style={{ display: 'flex', gap: '0.5rem'}}>
+        <form onSubmit={handleSubmit} className="nav-login-form d-lg-flex align-items-center gap-2 w-100 w-lg-auto" style={{ display: 'flex', gap: '0.5rem'}}>
 
             <input
                 type="email"
