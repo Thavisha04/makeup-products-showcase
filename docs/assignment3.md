@@ -50,7 +50,6 @@ This project includes admin & author product management, dynamic routing, catego
 ### Technologies Used
 - Frontend
   - Next.js
-  - React
   - React Bootstrap
   - Context API for state management
 
@@ -67,6 +66,6 @@ This project includes admin & author product management, dynamic routing, catego
 
 - Start Development Server
     - 'npm run dev'
-    - 'http://localhost:3000' -> App will run at
+    - App will run at : 'http://localhost:3000'
 
 
